@@ -15,14 +15,16 @@ RSpec.describe Raven::Processor::Cookies do
           "Cookie" => "_sentry-testapp_session=SlRKVnNha2Z",
           "AnotherHeader" => "still_here"
         },
-        :cookies => "_sentry-testapp_session=SlRKVnNha2Z",
+        :cookies => {
+          "_sentry-testapp_session" => "SlRKVnNha2Z"
+        },
         :some_other_data => "still_here"
       }
     }
 
     result = @processor.process(test_data)
 
-    expect(result[:request][:cookies]).to eq("********")
+    expect(result[:request][:cookies]).to eq("_sentry-testapp_session" => "********")
     expect(result[:request][:headers]["Cookie"]).to eq("********")
     expect(result[:request][:some_other_data]).to eq("still_here")
     expect(result[:request][:headers]["AnotherHeader"]).to eq("still_here")
@@ -35,14 +37,16 @@ RSpec.describe Raven::Processor::Cookies do
           "Cookie" => "_sentry-testapp_session=SlRKVnNha2Z",
           "AnotherHeader" => "still_here"
         },
-        "cookies" => "_sentry-testapp_session=SlRKVnNha2Z",
+        "cookies" => {
+          "_sentry-testapp_session" => "SlRKVnNha2Z"
+        },
         "some_other_data" => "still_here"
       }
     }
 
     result = @processor.process(test_data)
 
-    expect(result["request"]["cookies"]).to eq("********")
+    expect(result["request"]["cookies"]).to eq("_sentry-testapp_session" => "********")
     expect(result["request"]["headers"]["Cookie"]).to eq("********")
     expect(result["request"]["some_other_data"]).to eq("still_here")
     expect(result["request"]["headers"]["AnotherHeader"]).to eq("still_here")
